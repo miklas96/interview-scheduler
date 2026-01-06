@@ -4,7 +4,10 @@ import { CommonModule } from '@angular/common';
 import { KanbanColumn, Task } from '../../../models/kanban.model';
 import { COLUMNS_DATA } from '../../../../data/data';
 import {
+  CdkDrag,
   CdkDragDrop,
+  CdkDropList,
+  CdkDropListGroup,
   DragDropModule,
   moveItemInArray,
   transferArrayItem,
@@ -14,7 +17,7 @@ import { KanbanItem } from '../kanban-item/kanban-item';
 @Component({
   selector: 'app-kanban-table',
   standalone: true,
-  imports: [CommonModule, DragDropModule, KanbanItem],
+  imports: [CommonModule, DragDropModule, KanbanItem, CdkDropListGroup, CdkDropList, CdkDrag],
   templateUrl: './kanban-table.html',
   styleUrls: ['./kanban-table.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
