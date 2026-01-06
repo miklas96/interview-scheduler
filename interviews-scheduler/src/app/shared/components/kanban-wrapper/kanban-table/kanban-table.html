@@ -1,0 +1,31 @@
+<div class="board-container">
+  <h1>Kanban Board (Angular 20)</h1>
+
+  <div class="kanban-wrapper" cdkDropListGroup>
+    @for (column of columns(); track column.id) {
+    <div class="column">
+      <div class="column-header" [class]="'header-' + column.id">
+        <span>{{ column.title }}</span>
+        <span class="badge">{{ column.items.length }}</span>
+      </div>
+
+      <div
+        class="task-list"
+        cdkDropList
+        [cdkDropListData]="column.items"
+        (cdkDropListDropped)="onDrop($event)"
+      >
+        @for (task of column.items; track task.id) {
+
+        <div class="drag-item-wrapper" cdkDrag [cdkDragData]="task">
+          <div *cdkDragPlaceholder class="custom-placeholder"></div>
+
+          <app-kanban-item [item]="task"></app-kanban-item>
+        </div>
+
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
