@@ -1,2 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
-/* Core CSS */
+/* styles.scss */
+:root {
+  /* Ustawienie domyślnego tła i koloru tekstu z palety Aura */
+  --surface-ground: var(--p-surface-50);
+  --text-color: var(--p-text-color);
+}
+
+body {
+  background-color: var(--surface-ground);
+  color: var(--text-color);
+  font-family: var(--font-family); /* Aura ustawia też fonty */
+  margin: 0;
+  padding: 0;
+}

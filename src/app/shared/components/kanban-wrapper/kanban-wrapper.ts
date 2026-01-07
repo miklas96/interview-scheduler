@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
 import { KanbanTable } from './kanban-table/kanban-table';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-kanban-wrapper',
-  imports: [KanbanTable],
+  imports: [KanbanTable, ButtonModule],
   templateUrl: './kanban-wrapper.html',
   styleUrl: './kanban-wrapper.css',
 })
-export class KanbanWrapper {}
+export class KanbanWrapper {
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element?.classList.toggle('my-app-dark');
+  }
+}
