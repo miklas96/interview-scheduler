@@ -1,0 +1,22 @@
+<p-dialog [(visible)]="show" [modal]="true" [header]="jobName()" [style]="{ width: '400px' }">
+  <div class="offer-wrapper">
+    <div class="offer-url">
+      <h3>Offer link:</h3>
+      <a target="_blank" [href]="offerUrl()">{{ offerUrl() }}</a>
+    </div>
+    <div class="offer-salary">
+      <h3>Salary:</h3>
+      {{ salaryMin() | currency : 'PLN' }} - {{ salaryMax() | currency : 'PLN' }} /
+      {{ salaryPeriod() }}
+    </div>
+    <div class="offer-meeting-url">
+      <h3>Meeting Link:</h3>
+      <a [href]="meetingUrl()" target="_blank">{{ meetingUrl() }}</a>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Anuluj" icon="pi pi-times" (click)="close()" styleClass="p-button-text">
+    </p-button>
+    <p-button label="Zapisz" icon="pi pi-check" (click)="save()"> </p-button>
+  </ng-template>
+</p-dialog>

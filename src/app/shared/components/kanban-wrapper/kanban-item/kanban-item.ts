@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Task } from '../../../models/kanban.model';
 import { CommonModule } from '@angular/common';
 
@@ -8,10 +8,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './kanban-item.html',
   styleUrl: './kanban-item.css',
 })
-export class KanbanItem implements OnInit {
+export class KanbanItem {
   item = input.required<Task>();
-
-  ngOnInit(): void {
-    console.log('KanbanItem initialized with item:', this.item());
-  }
 }

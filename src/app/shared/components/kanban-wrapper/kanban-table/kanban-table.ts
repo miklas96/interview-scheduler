@@ -9,11 +9,13 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { KanbanItem } from '../kanban-item/kanban-item';
+import { ButtonModule } from 'primeng/button';
+import { KanbanItemDetails } from '../kanban-item-details/kanban-item-details';
 
 @Component({
   selector: 'app-kanban-table',
   standalone: true,
-  imports: [CommonModule, DragDropModule, KanbanItem],
+  imports: [CommonModule, DragDropModule, KanbanItem, ButtonModule, KanbanItemDetails],
   templateUrl: './kanban-table.html',
   styleUrls: ['./kanban-table.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,6 +23,7 @@ import { KanbanItem } from '../kanban-item/kanban-item';
 export class KanbanTable {
   // Inicjalizacja z danych statycznych (fallback)
   columns = signal<KanbanColumn[]>(COLUMNS_DATA);
+  showDialog = signal<boolean>(false);
 
   constructor() {
     this.loadFromStorage();
@@ -71,6 +74,15 @@ export class KanbanTable {
 
     // Wyczyść pole po dodaniu
     titleInput.value = '';
+  }
+
+  openDetails() {
+    this.showDialog.set(true);
+  }
+
+  onSave(updatedItem: any) {
+    console.log('Zapisano dane:', updatedItem);
+    // Tutaj można dodać logikę aktualizacji konkretnego zadania w kolumnach
   }
 
   onDrop(event: CdkDragDrop<Task[]>) {
