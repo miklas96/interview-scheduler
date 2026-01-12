@@ -1,22 +1,98 @@
-<p-dialog [(visible)]="show" [modal]="true" [header]="jobName()" [style]="{ width: '400px' }">
-  <div class="offer-wrapper">
-    <div class="offer-url">
-      <h3>Offer link:</h3>
-      <a target="_blank" [href]="offerUrl()">{{ offerUrl() }}</a>
-    </div>
-    <div class="offer-salary">
-      <h3>Salary:</h3>
-      {{ salaryMin() | currency : 'PLN' }} - {{ salaryMax() | currency : 'PLN' }} /
-      {{ salaryPeriod() }}
-    </div>
-    <div class="offer-meeting-url">
-      <h3>Meeting Link:</h3>
-      <a [href]="meetingUrl()" target="_blank">{{ meetingUrl() }}</a>
-    </div>
-  </div>
+<p-dialog [(visible)]="show" [modal]="true" [header]="headerName()" [style]="{ width: '600px' }">
+  @if (!editJobDetails()) {
+  <ng-container *ngTemplateOutlet="staticDialog"></ng-container>
+  } @else {
+  <ng-container *ngTemplateOutlet="editDialog"></ng-container>
+  }
   <ng-template pTemplate="footer">
-    <p-button label="Anuluj" icon="pi pi-times" (click)="close()" styleClass="p-button-text">
+    <p-button label="Edit" icon="pi pi-file-edit" (click)="edit()" styleClass="p-button-text">
+    </p-button>
+    <p-button
+      label="Close"
+      icon="pi pi-times"
+      (click)="close()"
+      [disabled]="editJobDetails()"
+      styleClass="p-button-text"
+    >
     </p-button>
     <p-button label="Zapisz" icon="pi pi-check" (click)="save()"> </p-button>
   </ng-template>
 </p-dialog>
+
+<ng-template #staticDialog>
+  <div class="offer-wrapper">
+    <div class="offer-url">
+      <h3>Offer link:</h3>
+      <a target="_blank" [href]="jobDetails().offerUrl">{{ jobDetails().offerUrl }}</a>
+    </div>
+    <div class="offer-salary">
+      <h3>Salary:</h3>
+      {{ jobDetails().salaryMin | currency : 'PLN' }} -
+      {{ jobDetails().salaryMax | currency : 'PLN' }} /
+      {{ salaryPeriod() }}
+    </div>
+    <div class="offer-meeting-url">
+      <h3>Meeting Link:</h3>
+      <a [href]="jobDetails().meetingUrl" target="_blank">{{ jobDetails().meetingUrl }}</a>
+    </div>
+    <div class="offer-additional-info">
+      <h3>Additional info:</h3>
+      {{ jobDetails().additionalInfo }}
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #editDialog>
+  <form [formGroup]="jobForm">
+    <div class="edit-form">
+      <div class="form-group">
+        <label for="jobName">Company name:</label>
+        <input id="jobName" type="text" pInputText formControlName="jobName" name="jobName" />
+      </div>
+      <div class="form-group">
+        <label for="offerUrl">Offer link:</label>
+        <input id="offerUrl" type="text" pInputText formControlName="offerUrl" name="offerUrl" />
+      </div>
+      <div class="form-group">
+        <label for="meetingUrl">Meeting link:</label>
+        <input
+          id="meetingUrl"
+          type="text"
+          pInputText
+          formControlName="meetingUrl"
+          name="meetingUrl"
+        />
+      </div>
+      <div class="form-group">
+        <label for="salaryMin">Min salary:</label>
+        <input
+          id="salaryMin"
+          type="number"
+          pInputText
+          formControlName="salaryMin"
+          name="salaryMin"
+        />
+      </div>
+      <div class="form-group">
+        <label for="salaryMax">Max salary:</label>
+        <input
+          id="salaryMax"
+          type="number"
+          pInputText
+          formControlName="salaryMax"
+          name="salaryMax"
+        />
+      </div>
+      <div class="form-group">
+        <label for="addInfo">Additional info:</label>
+        <textarea
+          id="addInfo"
+          type="text"
+          pInputText
+          formControlName="additionalInfo"
+          name="additionalInfo"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+</ng-template>

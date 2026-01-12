@@ -8,6 +8,7 @@
   cursor: grab; /* Kursor łapki */
   margin-bottom: 10px; /* Odstęp między kartami */
   transition: box-shadow 0.1s;
+  border-radius: 12px;
 }
 
 :host:hover {
@@ -26,5 +27,18 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
+}
+
+.delete-btn {
+  position: relative;
+  top: 5px;
+  right: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 1; /* Domyślnie ukryty */
+  transition: opacity 0.2s;
+  font-size: 1.2rem;
+  z-index: 10;
 }
 /* ... style tagów i avatarów ... */

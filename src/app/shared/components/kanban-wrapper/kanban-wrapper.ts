@@ -8,9 +8,4 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './kanban-wrapper.html',
   styleUrl: './kanban-wrapper.css',
 })
-export class KanbanWrapper {
-  toggleDarkMode() {
-    const element = document.querySelector('html');
-    element?.classList.toggle('my-app-dark');
-  }
-}
+export class KanbanWrapper {}

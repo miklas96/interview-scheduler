@@ -1,9 +1,4 @@
 <div class="task-card-content">
-  <div class="task-title">{{ item().title }}</div>
-  <div class="task-meta">
-    <span class="tag" [ngClass]="item().tag.type">
-      {{ item().tag.label }}
-    </span>
-    <div class="avatar">{{ item().assignee }}</div>
-  </div>
+  <div class="task-title">{{ item().jobName }}</div>
+  <button class="delete-btn" (click)="onDelete($event)">🗑️</button>
 </div>

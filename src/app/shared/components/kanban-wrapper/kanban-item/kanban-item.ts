@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
-import { Task } from '../../../models/kanban.model';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { JobDetails } from '../../../models/kanban.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,7 +7,14 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './kanban-item.html',
   styleUrl: './kanban-item.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KanbanItem {
-  item = input.required<Task>();
+  item = input.required<JobDetails>();
+  delete = output<void>();
+
+  onDelete(event: Event) {
+    event.stopPropagation(); // Ważne! Żeby nie otwierać dialogu edycji przy usuwaniu
+    this.delete.emit();
+  }
 }

@@ -1,3 +1,5 @@
+@import 'primeicons/primeicons.css';
+
 /* styles.scss */
 :root {
   /* Ustawienie domyślnego tła i koloru tekstu z palety Aura */
@@ -11,4 +13,12 @@ body {
   font-family: var(--font-family); /* Aura ustawia też fonty */
   margin: 0;
   padding: 0;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit; /* Dziedziczenie fontów dla spójności */
+  border-radius: 12px;
 }
