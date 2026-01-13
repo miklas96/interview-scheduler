@@ -1,4 +1,11 @@
-import { Component, signal, ChangeDetectionStrategy, effect, inject, Signal } from '@angular/core';
+import {
+  Component,
+  signal,
+  ChangeDetectionStrategy,
+  inject,
+  Signal,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JobDetails, KanbanColumn, Task } from '../../../models/kanban.model';
 import { COLUMNS_DATA } from '../../../../data/data';
@@ -32,15 +39,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KanbanTable {
-  // Inicjalizacja z danych statycznych (fallback)
-  // columns = signal<KanbanColumn[]>(COLUMNS_DATA);
   showDialog = signal<boolean>(false);
   jobDetails = signal<JobDetails>({} as JobDetails);
   private firestore = inject(Firestore);
 
-  // Pobieramy kolekcję 'columns' z bazy.
-  // collectionData zwraca Observable, toSignal zamienia to na Signal.
-  // Sortujemy po ID, żeby kolumny nie skakały.
   columns: Signal<KanbanColumn[]> = toSignal(
     collectionData(collection(this.firestore, 'columns'), { idField: 'id' }).pipe(
       map((cols: any[]) => {
@@ -49,14 +51,39 @@ export class KanbanTable {
     ),
     { initialValue: COLUMNS_DATA }
   );
+  @ViewChild(KanbanItemDetails) dialog!: KanbanItemDetails;
 
-  openDetails() {
-    this.showDialog.set(true);
+  openDetails(task: JobDetails) {
+    this.dialog.show(task);
   }
 
-  onSave(updatedItem: JobDetails) {
-    console.log('Zapisano dane:', updatedItem);
-    // Tutaj można dodać logikę aktualizacji konkretnego zadania w kolumnach
+  async onSave(updatedItem: JobDetails) {
+    const allColumns = this.columns();
+    const targetColumn = allColumns.find((col) =>
+      col.items.some((item) => {
+        console.log(item);
+        return item.id === updatedItem.id;
+      })
+    );
+
+    if (!targetColumn) {
+      console.error('Nie znaleziono kolumny dla zadania o ID:', updatedItem.id);
+      return;
+    }
+
+    // 2. Stwórz nową tablicę items z zaktualizowanym zadaniem
+    const newItems = targetColumn.items.map((item) =>
+      item.id === updatedItem.id ? updatedItem : item
+    );
+
+    // 3. Zapisz zmianę w Firestore
+    const colRef = doc(this.firestore, 'columns', targetColumn.id);
+
+    try {
+      await updateDoc(colRef, { items: newItems });
+    } catch (err) {
+      console.error('Błąd podczas zapisu do Firestore:', err);
+    }
   }
 
   /**

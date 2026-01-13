@@ -25,4 +25,5 @@ export interface KanbanColumn {
   id: ColumnId;
   title: string;
   items: JobDetails[];
+  order: number;
 }

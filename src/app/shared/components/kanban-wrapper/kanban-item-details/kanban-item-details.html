@@ -1,5 +1,11 @@
-<p-dialog [(visible)]="show" [modal]="true" [header]="headerName()" [style]="{ width: '600px' }">
-  @if (!editJobDetails()) {
+<p-dialog
+  [(visible)]="showDialog"
+  [modal]="true"
+  [header]="headerName()"
+  [style]="{ width: '600px' }"
+  [breakpoints]="{ '960px': '95vw' }"
+>
+  @if (jobDetails()) { @if (!editJobDetails()) {
   <ng-container *ngTemplateOutlet="staticDialog"></ng-container>
   } @else {
   <ng-container *ngTemplateOutlet="editDialog"></ng-container>
@@ -15,8 +21,16 @@
       styleClass="p-button-text"
     >
     </p-button>
-    <p-button label="Zapisz" icon="pi pi-check" (click)="save()"> </p-button>
+    <p-button
+      type="submit"
+      label="Save"
+      icon="pi pi-check"
+      [disabled]="!jobForm.valid"
+      (click)="save()"
+    >
+    </p-button>
   </ng-template>
+  }
 </p-dialog>
 
 <ng-template #staticDialog>
@@ -43,7 +57,7 @@
 </ng-template>
 
 <ng-template #editDialog>
-  <form [formGroup]="jobForm">
+  <form [formGroup]="jobForm" (ngSubmit)="save()">
     <div class="edit-form">
       <div class="form-group">
         <label for="jobName">Company name:</label>

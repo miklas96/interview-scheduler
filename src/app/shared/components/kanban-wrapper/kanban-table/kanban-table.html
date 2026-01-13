@@ -20,12 +20,12 @@
           <app-kanban-item
             [item]="task"
             (delete)="removeItem(column.id, task)"
-            (click)="openDetails()"
+            (click)="openDetails(task)"
           ></app-kanban-item>
         </div>
         }
       </div>
-
+      @if (column.order === 1) {
       <div class="add-task-area">
         <input
           #taskInput
@@ -35,12 +35,9 @@
         />
         <button (click)="addTask(column.id, taskInput)">Add</button>
       </div>
+      }
     </div>
     }
   </div>
 </div>
-<app-kanban-item-details
-  [(show)]="showDialog"
-  [jobDetails]="jobDetails()"
-  (onSave)="onSave($event)"
-></app-kanban-item-details>
+<app-kanban-item-details #dialogRef (onSave)="onSave($event)"></app-kanban-item-details>

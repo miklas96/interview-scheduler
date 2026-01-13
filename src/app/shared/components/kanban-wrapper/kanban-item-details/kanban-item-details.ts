@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  input,
+  effect,
   model,
   output,
   signal,
@@ -31,30 +31,53 @@ import { InputNumberModule } from 'primeng/inputnumber';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KanbanItemDetails {
-  show = model<boolean>(false);
   onSave = output<any>();
   onClose = output<boolean>();
 
-  jobDetails = model<JobDetails>({} as JobDetails);
+  jobDetails = signal<JobDetails>({} as JobDetails);
   headerName = computed(() => (this.editJobDetails() ? 'Edit' : this.jobDetails().jobName));
 
   editJobDetails = signal<boolean>(false);
+  showDialog = model<boolean>(false);
 
   jobForm = new FormGroup({
-    jobName: new FormControl(this.jobDetails().jobName),
-    offerUrl: new FormControl(this.jobDetails().offerUrl),
-    meetingUrl: new FormControl(this.jobDetails().meetingUrl),
-    salaryMin: new FormControl(this.jobDetails().salaryMin),
-    salaryMax: new FormControl(this.jobDetails().salaryMax),
-    additionalInfo: new FormControl(this.jobDetails().additionalInfo),
+    jobName: new FormControl(''),
+    offerUrl: new FormControl(''),
+    meetingUrl: new FormControl(''),
+    salaryMin: new FormControl(0),
+    salaryMax: new FormControl(0),
+    additionalInfo: new FormControl(''),
   });
+
+  constructor() {
+    // Effect uruchomi się za każdym razem, gdy zmieni się jobDetails()
+    effect(() => {
+      const details = this.jobDetails();
+
+      // Resetujemy formularz nowymi wartościami
+      // reset() jest lepszy niż patchValue tutaj, bo czyści też stan "touched/dirty"
+      this.jobForm.reset({
+        jobName: details.jobName,
+        offerUrl: details.offerUrl,
+        meetingUrl: details.meetingUrl,
+        salaryMin: details.salaryMin,
+        salaryMax: details.salaryMax,
+        additionalInfo: details.additionalInfo,
+      });
+    });
+  }
+
+  show(jobDetails: JobDetails) {
+    this.jobDetails.set(jobDetails);
+    this.showDialog.set(true);
+  }
 
   salaryPeriod() {
     return this.jobDetails().salaryMin <= 50 ? 'month' : 'hour';
   }
 
   close() {
-    this.show.set(false); // To zamknie okno i zaktualizuje zmienną w rodzicu
+    this.showDialog.set(false); // To zamknie okno i zaktualizuje zmienną w rodzicu
   }
 
   edit() {
@@ -65,8 +88,9 @@ export class KanbanItemDetails {
     this.editJobDetails.set(false);
     console.log(this.jobForm.value);
     if (this.jobForm.valid) {
-      this.jobDetails.set(this.jobForm.value as JobDetails);
+      this.jobDetails.set({ ...this.jobDetails(), ...(this.jobForm.value as JobDetails) });
       const result = {
+        id: this.jobDetails().id,
         jobName: this.jobDetails().jobName,
         offerUrl: this.jobDetails().offerUrl,
         meetingUrl: this.jobDetails().meetingUrl,
