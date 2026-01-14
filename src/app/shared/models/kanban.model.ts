@@ -15,8 +15,8 @@ export interface JobDetails {
   jobName: string;
   offerUrl: string;
   meetingUrl: string;
-  salaryMin: number;
-  salaryMax: number;
+  salaryMin: number | null;
+  salaryMax: number | null;
   additionalInfo?: string;
   salaryPeriod?: string;
 }

@@ -13,9 +13,15 @@
         cdkDropList
         [cdkDropListData]="column.items"
         (cdkDropListDropped)="onDrop($event)"
+        (cdkDragStarted)="onDragStarted()"
       >
         @for (task of column?.items; track task.id) {
-        <div class="drag-item-wrapper" cdkDrag [cdkDragData]="task">
+        <div
+          class="drag-item-wrapper"
+          cdkDrag
+          [cdkDragData]="task"
+          [cdkDragStartDelay]="{ touch: 500, mouse: 0 }"
+        >
           <div *cdkDragPlaceholder class="custom-placeholder"></div>
           <app-kanban-item
             [item]="task"

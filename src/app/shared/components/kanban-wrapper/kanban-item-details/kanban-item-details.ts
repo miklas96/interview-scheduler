@@ -73,7 +73,7 @@ export class KanbanItemDetails {
   }
 
   salaryPeriod() {
-    return this.jobDetails().salaryMin <= 50 ? 'month' : 'hour';
+    return Number(this.jobDetails().salaryMin) >= 1000 ? 'month' : 'hour';
   }
 
   close() {
@@ -86,7 +86,6 @@ export class KanbanItemDetails {
 
   save() {
     this.editJobDetails.set(false);
-    console.log(this.jobForm.value);
     if (this.jobForm.valid) {
       this.jobDetails.set({ ...this.jobDetails(), ...(this.jobForm.value as JobDetails) });
       const result = {

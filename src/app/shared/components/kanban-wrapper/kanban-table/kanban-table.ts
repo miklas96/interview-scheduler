@@ -61,7 +61,6 @@ export class KanbanTable {
     const allColumns = this.columns();
     const targetColumn = allColumns.find((col) =>
       col.items.some((item) => {
-        console.log(item);
         return item.id === updatedItem.id;
       })
     );
@@ -99,8 +98,8 @@ export class KanbanTable {
       jobName: title,
       offerUrl: '',
       meetingUrl: '',
-      salaryMin: 0,
-      salaryMax: 0,
+      salaryMin: null,
+      salaryMax: null,
       additionalInfo: '',
     };
 
@@ -168,6 +167,13 @@ export class KanbanTable {
           updateDoc(doc(this.firestore, 'columns', currColId), { items: event.container.data }),
         ]);
       }
+    }
+  }
+
+  onDragStarted() {
+    // Krótka wibracja (jeśli przeglądarka wspiera)
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
     }
   }
 
