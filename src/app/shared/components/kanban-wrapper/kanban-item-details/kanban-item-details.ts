@@ -73,7 +73,7 @@ export class KanbanItemDetails {
   }
 
   salaryPeriod() {
-    return Number(this.jobDetails().salaryMin) >= 1000 ? 'month' : 'hour';
+    return Number(this.jobDetails().salaryMin) >= 1000 ? 'm' : 'h';
   }
 
   close() {
