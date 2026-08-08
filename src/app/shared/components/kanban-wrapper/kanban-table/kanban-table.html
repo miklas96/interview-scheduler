@@ -1,0 +1,49 @@
+<div class="board-container">
+  <h1>Interviews Scheduler</h1>
+  <div class="kanban-wrapper" cdkDropListGroup>
+    @for (column of columns(); track column.id) {
+    <div class="column">
+      <div class="column-header" [class]="'header-' + column.id">
+        <span>{{ column.title }}</span>
+        <span class="badge">{{ column?.items?.length }}</span>
+      </div>
+
+      <div
+        class="task-list"
+        cdkDropList
+        [cdkDropListData]="column.items"
+        (cdkDropListDropped)="onDrop($event)"
+        (cdkDragStarted)="onDragStarted()"
+      >
+        @for (task of column?.items; track task.id) {
+        <div
+          class="drag-item-wrapper"
+          cdkDrag
+          [cdkDragData]="task"
+          [cdkDragStartDelay]="{ touch: 500, mouse: 0 }"
+        >
+          <div *cdkDragPlaceholder class="custom-placeholder"></div>
+          <app-kanban-item
+            [item]="task"
+            (delete)="removeItem(column.id, task)"
+            (click)="openDetails(task)"
+          ></app-kanban-item>
+        </div>
+        }
+      </div>
+      @if (column.order === 1) {
+      <div class="add-task-area">
+        <input
+          #taskInput
+          type="text"
+          placeholder="+ Add offer..."
+          (keyup.enter)="addTask(column.id, taskInput)"
+        />
+        <button (click)="addTask(column.id, taskInput)">Add</button>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
+<app-kanban-item-details #dialogRef (onSave)="onSave($event)"></app-kanban-item-details>

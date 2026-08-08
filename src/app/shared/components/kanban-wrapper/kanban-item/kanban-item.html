@@ -1,0 +1,14 @@
+<div class="task-card-content">
+  <div class="task-wrapper">
+    <div class="task-title">{{ item().jobName }}</div>
+    <button class="delete-btn" (click)="onDelete($event)">🗑️</button>
+  </div>
+  @if (item().salaryMax || item().salaryMin) {
+  <div class="task-salary">
+    <div class="salary-range">
+      {{ `${item().salaryMin} - ${item().salaryMax} PLN`}} /
+      {{ item().salaryPeriod }}
+    </div>
+  </div>
+  }
+</div>
